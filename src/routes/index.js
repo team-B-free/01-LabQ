@@ -1,12 +1,12 @@
-import { Router } from 'express';
-import examRouter from './exam.route.js';
+import { Router } from "express";
+import sewerLevelRouter from "./sewerLevelRoute.js";
 
 const router = Router();
 
 const defaultRoutes = [
   {
-    path: '/exams',
-    route: examRouter,
+    path: "/",
+    route: sewerLevelRouter,
   },
 ];
 
