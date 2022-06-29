@@ -1,0 +1,29 @@
+{
+  "name": "labq",
+  "version": "1.0.0",
+  "description": "참여기업 labQ 과제",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/team-B-free/01-LabQ.git"
+  },
+  "author": "team-B-free",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/team-B-free/01-LabQ/issues"
+  },
+  "homepage": "https://github.com/team-B-free/01-LabQ#readme",
+  "devDependencies": {
+    "eslint": "^8.18.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3"
+  }
+}
