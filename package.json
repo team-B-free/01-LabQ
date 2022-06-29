@@ -4,6 +4,7 @@
   "description": "참여기업 labQ 과제",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon src/bin/www.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
   },
@@ -25,5 +26,14 @@
     "eslint": "^8.18.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-validation": "^4.1.0",
+    "joi": "^17.6.0",
+    "nodemon": "^2.0.18",
+    "winston": "^3.8.0",
+    "winston-daily-rotate-file": "^4.7.1"
   }
 }
