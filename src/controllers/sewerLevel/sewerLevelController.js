@@ -4,17 +4,30 @@ import statusCode from '../../utils/statusCode.js';
 import message from '../../utils/responseMessage.js';
 import axios from 'axios';
 
-const getPerTenMinuteRain = (rainGaugeCode, rainFallData, filteredRainData) => {
+const getRainFallInfo = (originalRainFall) => {
+  const filteredRainFall = [];
+  const rainGaugeCode = [...new Set(originalRainFall.map(item => item.RAINGAUGE_CODE))];
+  rainGaugeCode.forEach(code => {
+    filteredRainFall.push(originalRainFall.find(item => item.RAINGAUGE_CODE === code));
+  });
+
+  filteredRainFall.forEach((item) => {
+    delete item.RAINFALL10;
+    delete item.RECEIVE_TIME;
+  });
+
   rainGaugeCode.forEach((code, idx) => {
     const perTenMinuteRain = {};
 
-    let filteredRainFall = rainFallData.filter(item => item.RAINGAUGE_CODE === code).map(item => item.RAINFALL10);
-    let receiveTime = rainFallData.filter(item => item.RAINGAUGE_CODE === code).map(item => item.RECEIVE_TIME);
+    let rainFall = originalRainFall.filter(item => item.RAINGAUGE_CODE === code).map(item => item.RAINFALL10);
+    let receiveTime = originalRainFall.filter(item => item.RAINGAUGE_CODE === code).map(item => item.RECEIVE_TIME);
 
-    receiveTime.forEach((key, i) => perTenMinuteRain[key] = filteredRainFall[i]);
+    receiveTime.forEach((key, i) => perTenMinuteRain[key] = rainFall[i]);
 
-    filteredRainData[idx].PER_TEN_MINUTE_RAIN = perTenMinuteRain;
+    filteredRainFall[idx].PER_TEN_MINUTE_RAIN = perTenMinuteRain;
   });
+
+  return filteredRainFall;
 }
 
 export const getSewerLevel = async (req, res) => {
@@ -37,37 +50,23 @@ export const getSewerLevel = async (req, res) => {
     const sewerLevel = await getSewerLevel(1, 1000, 23, '2022063009', '2022063010');
 
     //전달받은 데이터
-    const data = {
+    const receivedData = {
       "rainFall": rainFall.ListRainfallService.row,
       "sewerLevel": sewerLevel.DrainpipeMonitoringInfo.row
     };
 
-    const rainData = [];
-    const rainGaugeCode = [...new Set(data.rainFall.map(item => item.RAINGAUGE_CODE))];
-    rainGaugeCode.forEach(code => {
-      rainData.push(data.rainFall.find(item => item.RAINGAUGE_CODE === code));
-    });
-    
-    const filteredRainData = rainData.map(item => {
-      return {
-        "RAINGAUGE_CODE": item.RAINGAUGE_CODE,
-        "RAINGAUGE_NAME": item.RAINGAUGE_NAME,
-        "GU_CODE": item.GU_CODE,
-        "GU_NAME": item.GU_NAME
-      }
-    });
-
-    const rainFallData = data.rainFall;
+    const { rainFall: originalRainFall } = receivedData;
 
     //10분당 강우량 넣기
-    getPerTenMinuteRain(rainGaugeCode, rainFallData, filteredRainData);
+    const data = {};
+    data.rainFallInfo = getRainFallInfo(originalRainFall);
 
     return res
     .status(statusCode.OK)
     .send(response(
       statusCode.OK,
       message.SUCCESS,
-      filteredRainData,
+      data,
     ));
   }
   catch(err){
