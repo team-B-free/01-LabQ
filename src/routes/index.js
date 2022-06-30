@@ -1,17 +1,14 @@
-import { Router } from 'express';
-import examRouter from './exam.route.js';
+import { Router } from "express";
+import { query } from "express-validator";
+import controller from "../controllers/sewerLevelController.js";
 
 const router = Router();
 
-const defaultRoutes = [
-  {
-    path: '/exams',
-    route: examRouter,
-  },
-];
-
-defaultRoutes.forEach((route) => {
-  router.use(route.path, route.route);
-});
+router.get(
+  "/",
+  query("startDate").isISO8601().toDate(),
+  query("endDate").isISO8601().toDate(),
+  controller
+);
 
 export default router;
