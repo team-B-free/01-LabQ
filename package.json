@@ -4,7 +4,8 @@
   "description": "참여기업 labQ 과제",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/bin/www.js",
+    "start": "node src/bin/www.js & node client.js",
+    "dev": "nodemon src/bin/www.js",
     "test": "jest",
     "prepare": "husky install"
   },
@@ -33,7 +34,6 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-validation": "^4.1.0",
-    "express-validator": "^6.14.2",
     "joi": "^17.6.0",
     "nodemon": "^2.0.18",
     "winston": "^3.8.0",
