@@ -4,7 +4,7 @@
   "description": "참여기업 labQ 과제",
   "main": "index.js",
   "scripts": {
-    "start": "node src/bin/www.js & node client.js",
+    "start": "node src/bin/www.js",
     "dev": "nodemon src/bin/www.js",
     "test": "jest",
     "prepare": "husky install"
