@@ -1,13 +1,25 @@
-import { getApiData } from "../../modules/sewerlevelData.js";
+import { response, errResponse } from "../../utils/response.js";
+import statusCode from "../../utils/statusCode.js";
+import message from "../../utils/responseMessage.js"
+import getApiData from "../../modules/sewerLevelData.js";
+import apiProcessing from "../../modules/apiProcessing.js";
 
-export const getTest = async (req, res) => {
-  const { gu } = req.query;
+const getData = async (req, res) => {
+  const { guCode } = req.query;
 
-  try {
-    const result = await getApiData(gu);
+  const rawData = await getApiData(guCode) ?? {};
+  const { sewerLevelInfo, rainfall } = rawData;
+  const data = apiProcessing(rainfall, sewerLevelInfo);
 
-    res.json(result);
-  } catch (error) {
-    console.error(error);
+  if (data) {
+    return res
+      .status(statusCode.OK)
+      .send(response(statusCode.OK, message.SUCCESS, data));
+  } else {
+    return res
+      .status(statusCode.BAD_REQUEST)
+      .send(errResponse(statusCode.BAD_REQUEST, message.BAD_REQUEST));
   }
 };
+
+export default getData;
