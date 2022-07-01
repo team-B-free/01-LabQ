@@ -1,6 +1,6 @@
 import { responseRainGauge } from "../utils/responseData.js";
 
-const apiProcessing = (originalRainFall, originalSewerLevel) => {
+const processData = (originalRainFall, originalSewerLevel) => {
   const { GUBN: gubn, GUBN_NAM: gubnName } = originalSewerLevel[0];
 
   //한시간 하수관 수위 평균
@@ -45,4 +45,4 @@ const apiProcessing = (originalRainFall, originalSewerLevel) => {
   return data;
 }
 
-export default apiProcessing;
+export default processData;
