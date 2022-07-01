@@ -2,9 +2,8 @@ import { getTime } from "./measureTime.js";
 import "../utils/envConfig.js";
 import axios from "axios";
 
-const getApiData = async (req) => {
+const getApiData = async (gu) => {
   const measure = getTime();
-  const gu = req;
 
   const { startDate, endDate } = measure;
   let data = {};
@@ -12,16 +11,13 @@ const getApiData = async (req) => {
   //.env 파일에서 서비스인증키를 불러옵니다.
   const key = process.env.SERVICE_KEY;
 
-  //github 올릴 경우, 빈 값으로 적용
-  //const key = "";
-
   let drainLevelUrl = `http://openapi.seoul.go.kr:8088/${key}/json/DrainpipeMonitoringInfo/1/1000/${gu}/${startDate}/${endDate}`;
 
   try {
     const requestDrainLevel = await axios
       .get(drainLevelUrl)
       .then((result) => {
-        data.sewerlevelInfo = result.data.DrainpipeMonitoringInfo.row;
+        data.sewerLevelInfo = result.data.DrainpipeMonitoringInfo.row;
         return result.data;
       })
       .catch((err) => console.log(err));
@@ -40,7 +36,7 @@ const getApiData = async (req) => {
     await axios
       .get(rainDropUrl)
       .then((result) => {
-        data.rainfallInfo = result.data.ListRainfallService.row;
+        data.rainfall = result.data.ListRainfallService.row;
         return result.data;
       })
       .catch((err) => console.log(err));
