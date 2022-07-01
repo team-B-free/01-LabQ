@@ -1,34 +1,9 @@
+import axios from 'axios';
 import { logger } from '../../config/winson.js';
 import { response, errResponse } from '../../utils/response.js';
 import statusCode from '../../utils/statusCode.js';
 import message from '../../utils/responseMessage.js';
-import axios from 'axios';
-
-const getRainFallInfo = (originalRainFall) => {
-  const filteredRainFall = [];
-  const rainGaugeCode = [...new Set(originalRainFall.map(item => item.RAINGAUGE_CODE))];
-  rainGaugeCode.forEach(code => {
-    filteredRainFall.push(originalRainFall.find(item => item.RAINGAUGE_CODE === code));
-  });
-
-  filteredRainFall.forEach((item) => {
-    delete item.RAINFALL10;
-    delete item.RECEIVE_TIME;
-  });
-
-  rainGaugeCode.forEach((code, idx) => {
-    const perTenMinuteRain = {};
-
-    let rainFall = originalRainFall.filter(item => item.RAINGAUGE_CODE === code).map(item => item.RAINFALL10);
-    let receiveTime = originalRainFall.filter(item => item.RAINGAUGE_CODE === code).map(item => item.RECEIVE_TIME);
-
-    receiveTime.forEach((key, i) => perTenMinuteRain[key] = rainFall[i]);
-
-    filteredRainFall[idx].PER_TEN_MINUTE_RAIN = perTenMinuteRain;
-  });
-
-  return filteredRainFall;
-}
+import apiProcessing from '../../modules/apiProcessing.js';
 
 export const getSewerLevel = async (req, res) => {
   try{
@@ -55,11 +30,8 @@ export const getSewerLevel = async (req, res) => {
       "sewerLevel": sewerLevel.DrainpipeMonitoringInfo.row
     };
 
-    const { rainFall: originalRainFall } = receivedData;
-
-    //10분당 강우량 넣기
-    const data = {};
-    data.rainFallInfo = getRainFallInfo(originalRainFall);
+    const { rainFall: originalRainFall, sewerLevel: originalSewerLevel } = receivedData;
+    const data = apiProcessing(originalRainFall, originalSewerLevel);
 
     return res
     .status(statusCode.OK)
