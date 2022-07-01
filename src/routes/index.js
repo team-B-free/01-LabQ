@@ -1,22 +1,8 @@
-import { Router } from 'express';
-import examRouter from './exam.route.js';
-import sewerLevelRouter from './sewerLevelRoute.js';
+import { Router } from "express";
+import controller from "../controllers/sewerLevelController.js";
 
 const router = Router();
 
-const defaultRoutes = [
-  {
-    path: '/exams',
-    route: examRouter,
-  },
-  {
-    path: '/sewers',
-    route: sewerLevelRouter,
-  }
-];
-
-defaultRoutes.forEach((route) => {
-  router.use(route.path, route.route);
-});
+router.get("/api", controller);
 
 export default router;
