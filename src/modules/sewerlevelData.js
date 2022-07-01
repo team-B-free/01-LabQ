@@ -2,7 +2,7 @@ import { getTime } from "./measureTime.js";
 import "../utils/envConfig.js";
 import axios from "axios";
 
-export const getApiData = async (req, res) => {
+export const getApiData = async (req) => {
   const measure = getTime();
   const gu = req;
 
@@ -37,7 +37,7 @@ export const getApiData = async (req, res) => {
       gubnNameData
     )}`;
 
-    const requestRainDropLevel = await axios
+    await axios
       .get(rainDropUrl)
       .then((result) => {
         data.rainfallInfo = result.data.ListRainfallService.row;
