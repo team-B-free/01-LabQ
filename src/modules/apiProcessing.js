@@ -24,8 +24,7 @@ const apiProcessing = (originalRainFall, originalSewerLevel) => {
   rainGaugeCode.forEach((code) => {
     const rainFall = originalRainFall
       .filter(item => item.RAINGAUGE_CODE === code)
-      .map(item => Number(item.RAINFALL10))
-      .filter(item => item);
+      .map(item => Number(item.RAINFALL10)); 
     
     rainFallAvgArr.push(rainFall.reduce((prev, cur) => prev + cur, 0) / rainFall.length);
     rainFallSumArr.push(rainFall.reduce((prev, cur) => prev + cur, 0));

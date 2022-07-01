@@ -1,6 +1,5 @@
 import { Router } from "express";
-import controller from "../controllers/sewerLevelController.js";
-
+import controller from "../controllers/sewerLevelController/sewerLevelController.js";
 const router = Router();
 
 router.get("/api", controller);

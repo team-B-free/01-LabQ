@@ -15,7 +15,7 @@ const getInput = () => {
       console.log(`${guCode}`);
 
       axios
-        .get(`/?guCode=${guCode}`)
+        .get(`/api?guCode=${guCode}`)
         .then(function (res) {
           console.log(res.data);
         })
